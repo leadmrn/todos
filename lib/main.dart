@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todos/screens/home.dart';
+import 'package:todos/screens/profile.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    initialRoute: '/',
+    routes: {
+      '/':(context) => Home(),
+      '/profile':(context) => ProfilePage(),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
