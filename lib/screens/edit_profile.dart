@@ -11,10 +11,6 @@ import 'package:todos/widget/textfield_widget.dart';
 import '../model/user.dart';
 import 'package:path/path.dart';
 
-
-
-
-
 class EditProfilePage extends StatefulWidget {
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
@@ -30,61 +26,55 @@ class _EditProfilePageState extends State<EditProfilePage> {
     user = UserPreferences.getUser();
   }
 
-
   @override
   Widget build(BuildContext context) => Scaffold(
+        appBar: buildAppBar(context),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          children: [
+            ProfileWidget(
+                imagePath: user.imagePath,
+                isEdit: true,
+                onClicked: () async {
+                  final image = await ImagePicker()
+                      .pickImage(source: ImageSource.gallery);
+                  if (image == null) return;
 
-    appBar: buildAppBar(context),
+                  final directory = await getApplicationDocumentsDirectory();
+                  final name = basename(image.path);
+                  final imageFile = File('${directory.path}/$name');
+                  final newImage = await File(image.path).copy(imageFile.path);
 
-    body: ListView(
-      padding: EdgeInsets.symmetric(horizontal: 32),
-      physics: BouncingScrollPhysics(),
-      children: [
-        ProfileWidget(
-          imagePath: user.imagePath, 
-          isEdit: true,
-          onClicked: () async {
-            final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-            if (image == null) return;
-
-            final directory = await getApplicationDocumentsDirectory();
-            final name = basename(image.path);
-            final imageFile = File('${directory.path}/$name');
-            final newImage =
-                await File(image.path).copy(imageFile.path);
-
-            setState(() => user = user.copy(imagePath: newImage.path));
-          }
+                  setState(() => user = user.copy(imagePath: newImage.path));
+                }),
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              label: 'Nom',
+              text: user.name,
+              onChanged: (name) => user = user.copy(name: name),
+            ),
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              label: 'Email',
+              text: user.email,
+              onChanged: (email) => user = user.copy(email: email),
+            ),
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              label: 'À propos',
+              text: user.about,
+              maxLines: 5,
+              onChanged: (about) => user = user.copy(about: about),
+            ),
+            const SizedBox(height: 24),
+            ButtonWidget(
+              text: 'Sauvegarder',
+              onClicked: () {
+                UserPreferences.setUser(user);
+                Navigator.of(context).pop();
+              },
+            )
+          ],
         ),
-        const SizedBox(height: 24),
-        TextFieldWidget(
-          label: 'Full Name',
-          text: user.name,
-          onChanged: (name) => user = user.copy(name: name),
-        ),
-        const SizedBox(height: 24),
-        TextFieldWidget(
-          label: 'Email',
-          text: user.email,
-          onChanged: (email) => user = user.copy(email: email),
-        ),
-        const SizedBox(height: 24),
-        TextFieldWidget(
-          label: 'About',
-          text: user.about,
-          maxLines: 5,
-          onChanged: (about) => user = user.copy(about: about),
-        ),
-        const SizedBox(height: 24),
-        ButtonWidget(
-          text: 'Save',
-          onClicked: () {
-            UserPreferences.setUser(user);
-            Navigator.of(context).pop();
-          },
-        )
-
-      ],
-    ),
-  );
+      );
 }

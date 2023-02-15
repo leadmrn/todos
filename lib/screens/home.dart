@@ -24,7 +24,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white70,
+        backgroundColor: Colors.white,
         appBar: buildAppBar(context),
         body: Stack(
           children: [
@@ -40,7 +40,7 @@ class _HomeState extends State<Home> {
                         Container(
                             margin: const EdgeInsets.only(top: 50, bottom: 20),
                             child: const Text(
-                              'All ToDos',
+                              'Choses à faire',
                               style: TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.w500),
                             )),
@@ -73,12 +73,12 @@ class _HomeState extends State<Home> {
                             blurRadius: 10.0,
                             spreadRadius: 0.0)
                       ],
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextField(
                       controller: _todoController,
                       decoration: const InputDecoration(
-                          hintText: 'Add a new todo item',
+                          hintText: 'Ajouter une nouvelle tâche',
                           border: InputBorder.none),
                     ),
                   )),
@@ -147,7 +147,15 @@ class _HomeState extends State<Home> {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(20)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.grey,
+                  offset: Offset(0.0, 0.0),
+                  blurRadius: 10.0,
+                  spreadRadius: 0.0)
+            ]),
         child: TextField(
           onChanged: (value) => _runFilter(value),
           decoration: const InputDecoration(
@@ -156,7 +164,7 @@ class _HomeState extends State<Home> {
               prefixIconConstraints:
                   BoxConstraints(maxHeight: 20, minWidth: 25),
               border: InputBorder.none,
-              hintText: 'Search test 2',
+              hintText: 'Rechercher',
               hintStyle: TextStyle(color: Colors.grey)),
         ));
   }

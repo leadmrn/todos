@@ -6,7 +6,6 @@ import '../widget/appbar.dart';
 import 'package:todos/widget/profile_widget.dart';
 
 class ProfilePage extends StatefulWidget {
-
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -14,19 +13,17 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-
     final user = UserPreferences.getUser();
 
     return Scaffold(
-
       appBar: buildAppBar(context),
-
       body: ListView(
-        physics: BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         children: [
           TextButton(
             onPressed: () async {
-              dynamic result = await Navigator.pushNamed(context, '/edit_profile');
+              dynamic result =
+                  await Navigator.pushNamed(context, '/edit_profile');
               setState(() {});
             },
             child: ProfileWidget(
@@ -34,8 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
               onClicked: () async {},
             ),
           ),
-
-          const SizedBox(height: 24,),
+          const SizedBox(
+            height: 24,
+          ),
           buildName(user),
           buildAbout(user)
         ],
@@ -44,34 +42,36 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildName(User user) => Column(
-    children: [
-      Text(
-        user.name,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-      ),
-      const SizedBox(height: 4,),
-      Text(
-        user.email,
-        style: TextStyle(color: Colors.grey),
-      )
-    ],
-  );
-
-  Widget buildAbout(User user) => Container(
-    padding: EdgeInsets.symmetric(horizontal: 48),
-      child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'About',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            user.name,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 4,
+          ),
           Text(
-            user.about,
-            style: TextStyle(fontSize: 16, height: 1.4),
+            user.email,
+            style: TextStyle(color: Colors.grey),
           )
         ],
-      ),
-  );
+      );
+
+  Widget buildAbout(User user) => Container(
+        margin: EdgeInsets.only(top: 30),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'À propos',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              user.about,
+              style: TextStyle(fontSize: 16, height: 1.4),
+            )
+          ],
+        ),
+      );
 }

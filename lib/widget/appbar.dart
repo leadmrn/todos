@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:todos/utils/user_preferences.dart';
 
 AppBar buildAppBar(BuildContext context) {
+  final user = UserPreferences.getUser();
+
   return AppBar(
       elevation: 0,
       backgroundColor: Colors.purple,
-      title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Icon(Icons.menu, color: Colors.grey, size: 30),
-          Container(
-            height: 40,
-            width: 40,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-            ),
-          )
-        ],
-      ));
+      title: ModalRoute.of(context)!.settings.name == '/edit_profile' ||
+              ModalRoute.of(context)!.settings.name == '/profile'
+          ? null
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                    onPressed: () async {
+                      dynamic result =
+                          await Navigator.pushNamed(context, '/profile');
+                    },
+                    child: Text(
+                      'profil',
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ));
 }
