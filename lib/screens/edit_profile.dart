@@ -44,8 +44,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
           imagePath: user.imagePath, 
           isEdit: true,
           onClicked: () async {
-            final image = await ImagePicker().getImage(source: ImageSource.gallery);
-                                if (image == null) return;
+            final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+            if (image == null) return;
 
             final directory = await getApplicationDocumentsDirectory();
             final name = basename(image.path);
