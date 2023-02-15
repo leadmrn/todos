@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../model/user.dart';
+import 'package:todos/screens/edit_profile.dart';
 import 'package:todos/utils/user_preferences.dart';
 import '../widget/appbar.dart';
 import 'package:todos/widget/profile_widget.dart';
@@ -12,18 +14,64 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final user = UserPreferences.myUser;
+
+    final user = UserPreferences.getUser();
+
     return Scaffold(
+
       appBar: buildAppBar(context),
+
       body: ListView(
         physics: BouncingScrollPhysics(),
         children: [
-          ProfileWidget(
-            imagePath: user.imagePath,
-            onClicked: () async {},
+          TextButton(
+            onPressed: () async {
+              dynamic result = await Navigator.pushNamed(context, '/edit_profile');
+              setState(() {});
+            },
+            child: ProfileWidget(
+              imagePath: user.imagePath,
+              onClicked: () async {},
+            ),
           ),
+
+          const SizedBox(height: 24,),
+          buildName(user),
+          buildAbout(user)
         ],
       ),
     );
   }
+
+  Widget buildName(User user) => Column(
+    children: [
+      Text(
+        user.name,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      ),
+      const SizedBox(height: 4,),
+      Text(
+        user.email,
+        style: TextStyle(color: Colors.grey),
+      )
+    ],
+  );
+
+  Widget buildAbout(User user) => Container(
+    padding: EdgeInsets.symmetric(horizontal: 48),
+      child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'About',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+          Text(
+            user.about,
+            style: TextStyle(fontSize: 16, height: 1.4),
+          )
+        ],
+      ),
+  );
 }

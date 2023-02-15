@@ -1,30 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todos/screens/home.dart';
+import 'package:flutter/services.dart';
 import 'package:todos/screens/profile.dart';
+import 'package:todos/screens/edit_profile.dart';
+import 'package:todos/utils/user_preferences.dart';
 
-void main() {
-  runApp(MaterialApp(
-    initialRoute: '/',
-    routes: {
-      '/': (context) => Home(),
-      '/profile': (context) => ProfilePage(),
-    },
-  ));
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await UserPreferences.init();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'ToDo App',
-      home: Home(),
+      routes: {
+        '/': (context) => ProfilePage(),
+        '/profile': (context) => ProfilePage(),
+        '/edit_profile': (context) => EditProfilePage(),
+      },
     );
   }
 }
