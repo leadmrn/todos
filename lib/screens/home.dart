@@ -2,18 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:todos/model/todo.dart';
 import 'package:todos/widget/todo_item.dart';
 import '../widget/appbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:todos/auth.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+
+  Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
+
+  final User? user = Auth().currentUser;
+
+    Widget _title() {
+    return const Text('Firebase Auth');
+  }
+
+  Widget _userUid() {
+    return Text(user?.email ?? 'User email');
+  }
+
+
 }
 
 class _HomeState extends State<Home> {
   final todosList = ToDo.todosList();
   List<ToDo> _foundToDo = [];
   final _todoController = TextEditingController();
+  Future<void> signOut() async {
+    await Auth().signOut();
+  }
+    Widget _signOutButton() {
+    return ElevatedButton(
+      onPressed: signOut,
+      child: const Text('Sign Out'),
+    );
+  }
 
   @override
   void initState() {
@@ -25,7 +49,9 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+      
         appBar: buildAppBar(context),
+        
         body: Stack(
           children: [
             Container(

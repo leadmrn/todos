@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:todos/utils/user_preferences.dart';
 
+import '../auth.dart';
+
 AppBar buildAppBar(BuildContext context) {
   final user = UserPreferences.getUser();
+
+    Future<void> signOut() async {
+    await Auth().signOut();
+  }
+    Widget _signOutButton() {
+    return ElevatedButton(
+      onPressed: signOut,
+      child: const Text('Sign Out'),
+    );
+  }
 
   return AppBar(
       elevation: 0,
@@ -21,7 +33,8 @@ AppBar buildAppBar(BuildContext context) {
                     child: Text(
                       'profil',
                       style: TextStyle(color: Colors.white),
-                    ))
+                    )),
+                    _signOutButton(),
               ],
             ));
 }
